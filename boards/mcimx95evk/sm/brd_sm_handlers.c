@@ -96,26 +96,10 @@ int32_t BRD_SM_SerialDevicesInit(void)
 {
     int32_t status = SM_ERR_SUCCESS;
     LPI2C_Type *const s_i2cBases[] = LPI2C_BASE_PTRS;
-    pcal6408a_config_t pcal6408Config;
 
     /* Fill in PCAL6408A dev */
     g_pcal6408aDev.i2cBase = s_i2cBases[BOARD_I2C_INSTANCE];
     g_pcal6408aDev.devAddr = BOARD_PCAL6408A_DEV_ADDR;
-
-    /* Init the bus expander */
-    PCAL6408A_GetDefaultConfig(&pcal6408Config);
-    pcal6408Config.inputLatch = 0xFFU;
-    if (!PCAL6408A_Init(&g_pcal6408aDev, &pcal6408Config))
-    {
-        status = SM_ERR_HARDWARE_ERROR;
-    }
-    else
-    {
-        if (!PCAL6408A_IntMaskSet(&g_pcal6408aDev, PCAL6408A_INITIAL_MASK))
-        {
-            status = SM_ERR_HARDWARE_ERROR;
-        }
-    }
 
     if (status == SM_ERR_SUCCESS)
     {
@@ -379,4 +363,3 @@ static void BRD_SM_Pf09Handler(void)
         BRD_SM_SensorHandler();
     }
 }
-
